@@ -1,12 +1,12 @@
 FROM openjdk:8-jdk-alpine
 
-MAINTAINER Miguel Garcia Puyol <miguelpuyol@gmail.com>
+LABEL MAINTAINER="Miguel Garcia Puyol <miguelpuyol@gmail.com>, ettingshausen <ettingshausen@outlook.com>"
 
 WORKDIR /var/app
 
-ADD zkui-*.jar /var/app/zkui.jar
+ADD target/zkui-*.jar /var/app/zkui.jar
 ADD config.cfg /var/app/config.cfg
-ADD bootstrap.sh /var/app/bootstrap.sh
+ADD docker/bootstrap.sh /var/app/bootstrap.sh
 
 ENTRYPOINT ["/var/app/bootstrap.sh"]
 

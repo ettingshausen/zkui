@@ -38,19 +38,28 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.deem.zkui.utils.LdapAuth;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.util.Arrays;
 
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/login"})
-public class Login extends HttpServlet {
+@Controller
+@RequestMapping("/login")
+public class Login  {
 
     private final static Logger logger = LoggerFactory.getLogger(Login.class);
 
-    @Override
+    @Autowired
+    private Properties globalProps;
+
+
+    @GetMapping
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Login Action!");
         try {
-            Properties globalProps = (Properties) getServletContext().getAttribute("globalProps");
             Map<String, Object> templateParam = new HashMap<>();
             templateParam.put("uptime", globalProps.getProperty("uptime"));
             templateParam.put("loginMessage", globalProps.getProperty("loginMessage"));
@@ -62,11 +71,10 @@ public class Login extends HttpServlet {
 
     }
 
-    @Override
+    @PostMapping
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Login Post Action!");
         try {
-            Properties globalProps = (Properties) getServletContext().getAttribute("globalProps");
             Map<String, Object> templateParam = new HashMap<>();
             HttpSession session = request.getSession(true);
             session.setMaxInactiveInterval(Integer.valueOf(globalProps.getProperty("sessionTimeout")));

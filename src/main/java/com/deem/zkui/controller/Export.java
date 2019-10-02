@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Set;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,18 +35,24 @@ import com.deem.zkui.vo.LeafBean;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/export"})
-public class Export extends HttpServlet {
+
+@RequestMapping("/export")
+@Controller
+public class Export {
 
     private final static Logger logger = LoggerFactory.getLogger(Export.class);
 
-    @Override
+    @Resource
+    private Properties globalProps;
+
+    @GetMapping
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Export Get Action!");
         try {
-            Properties globalProps = (Properties) this.getServletContext().getAttribute("globalProps");
             String zkServer = globalProps.getProperty("zkServer");
             String[] zkServerLst = zkServer.split(",");
 

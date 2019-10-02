@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,18 +35,23 @@ import com.deem.zkui.utils.ServletUtil;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/history"})
-public class ChangeLog extends HttpServlet {
+@RequestMapping("/history")
+@Controller
+public class ChangeLog  {
 
     private final static Logger logger = LoggerFactory.getLogger(ChangeLog.class);
+    @Resource
+    private Properties globalProps;
 
-    @Override
+    @GetMapping
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("History Get Action!");
         try {
-            Properties globalProps = (Properties) this.getServletContext().getAttribute("globalProps");
             Dao dao = new Dao(globalProps);
             Map<String, Object> templateParam = new HashMap<>();
             List<History> historyLst = dao.fetchHistoryRecords();
@@ -59,11 +65,10 @@ public class ChangeLog extends HttpServlet {
 
     }
 
-    @Override
+    @PostMapping
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("History Post Action!");
         try {
-            Properties globalProps = (Properties) this.getServletContext().getAttribute("globalProps");
             Dao dao = new Dao(globalProps);
             Map<String, Object> templateParam = new HashMap<>();
             String action = request.getParameter("action");

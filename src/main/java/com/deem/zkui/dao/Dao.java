@@ -49,7 +49,7 @@ public class Dao {
             Flyway flyway = new Flyway();
             flyway.setDataSource(globalProps.getProperty("jdbcUrl"), globalProps.getProperty("jdbcUser"), globalProps.getProperty("jdbcPwd"));
             //Will wipe db each time. Avoid this in prod.
-            if (globalProps.getProperty("env").equals("dev")) {
+            if ("dev".equals(globalProps.getProperty("env"))) {
                 flyway.clean();
             }
             //Remove the above line if deploying to prod.
@@ -66,7 +66,6 @@ public class Dao {
         history.size();
         this.close();
         return history;
-        
     }
     
     public List<History> fetchHistoryRecordsByNode(String historyNode) {

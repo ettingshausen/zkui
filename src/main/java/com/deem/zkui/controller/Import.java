@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -45,21 +46,25 @@ import com.deem.zkui.utils.ZooKeeperUtil;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/import"})
+@Controller
+@RequestMapping("/import")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 10, // 10 MB
         maxFileSize = 1024 * 1024 * 50, // 50 MB
         maxRequestSize = 1024 * 1024 * 100)      // 100 MB
-public class Import extends HttpServlet {
+public class Import  {
 
     private final static Logger logger = LoggerFactory.getLogger(Import.class);
+    @Resource
+    private Properties globalProps;
 
-    @Override
+    @GetMapping
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.debug("Importing Action!");
         try {
-            Properties globalProps = (Properties) this.getServletContext().getAttribute("globalProps");
             Dao dao = new Dao(globalProps);
             String zkServer = globalProps.getProperty("zkServer");
             String[] zkServerLst = zkServer.split(",");

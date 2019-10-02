@@ -29,18 +29,23 @@ import com.deem.zkui.utils.ServletUtil;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/logout"})
-public class Logout extends HttpServlet {
+@RequestMapping("/logout")
+@Controller
+public class Logout {
 
     private final static Logger logger = LoggerFactory.getLogger(Logout.class);
+    @Autowired
+    private Properties globalProps;
 
-    @Override
+    @GetMapping
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             logger.debug("Logout Action!");
-            Properties globalProps = (Properties) getServletContext().getAttribute("globalProps");
             String zkServer = globalProps.getProperty("zkServer");
             String[] zkServerLst = zkServer.split(",");
             ZooKeeper zk = ServletUtil.INSTANCE.getZookeeper(request, response, zkServerLst[0],globalProps);

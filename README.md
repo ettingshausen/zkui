@@ -1,16 +1,17 @@
 zkui - Zookeeper UI Dashboard
 ====================
-A UI dashboard that allows CRUD operations on Zookeeper.
+A UI dashboard that allows CRUD operations on Zookeeper.   
+>Note: This is a fork project, the original project is https://github.com/DeemOpen/zkui .  For some reason I convert it to spring boot project.
 
 Requirements
 ====================
-Requires Java 7 to run.
+Requires Java 8 to run.
 
 Setup
 ====================
 1. mvn clean install
 2. Copy the config.cfg to the folder with the jar file. Modify it to point to the zookeeper instance. Multiple zk instances are coma separated.  eg: server1:2181,server2:2181. First server should always be the leader.
-3. Run the jar. ( nohup java -jar zkui-2.0-SNAPSHOT-jar-with-dependencies.jar & )
+3. Run the jar. ( nohup java -jar zkui-2.0-SNAPSHOT.jar & )
 4. <a href="http://localhost:9090">http://localhost:9090</a> 
 
 Login Info
